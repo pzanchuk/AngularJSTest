@@ -1,20 +1,36 @@
 var myApp = angular.module('myApp', []);
 
-myApp.controller('mainController', function($scope){
+myApp.controller('mainController', function($scope, $http){
 
   $scope.name = "Pavel"
   $scope.last = "Zanchuk"
+  $scope.username = "robconery"
+
   $scope.myFunction = function(){
     return $scope.name + this.last;
   }
 
-  console.log($scope);
+  $scope.search = function(username){
+    $http.get("https://api.github.com/users/"+username)
+    .then(function(response){
+      $scope.userData = response.data;
+    },function (response){
+      $scope.error = "Could not fetch from API";
+    });
+  }
+  
+    console.log($scope);
+    console.log($scope.username);
   
 });
+
+
 
 (function autoRun(){
   alert("I am autorun")
 })();
+
+
 
 function changeBgBack(){
   document.getElementById('change').style.backgroundColor = 'white'; 
@@ -32,5 +48,5 @@ var searchPeople = function(first, last){
 
 var searchPeopleString = searchPeople.toString();
 
-console.log(typeof(searchPeople));
-console.log(typeof(searchPeopleString));
+console.log("This is typeof(searchPeople) "+typeof(searchPeople));
+console.log("This is searchPeopleToString "+searchPeopleString);
